@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Карта Дня - Мотивация и Вдохновение</title>
+    <meta name="description" content="Получи своё мотивирующее послание на сегодня">
+    <meta name="theme-color" content="#1a1a2e">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="imgs/icon-192.png">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Marck+Script&display=swap" rel="stylesheet">
     <style>
         * {
@@ -20,11 +24,11 @@
             justify-content: center;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
             font-family: 'Cormorant Garamond', serif;
-            overflow: hidden;
+            overflow-x: hidden;
             position: relative;
         }
 
-        /* Звёзды на фоне */
+        /* Звёзды и частицы */
         .stars {
             position: fixed;
             top: 0;
@@ -45,18 +49,35 @@
             animation: twinkle 2s infinite;
         }
 
+        .shooting-star {
+            position: absolute;
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,1));
+            animation: shooting 3s linear infinite;
+            opacity: 0;
+        }
+
         @keyframes twinkle {
             0%, 100% { opacity: 0.3; transform: scale(1); }
             50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        @keyframes shooting {
+            0% { transform: translateX(-100px) translateY(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateX(calc(100vw + 100px)) translateY(100px); opacity: 0; }
         }
 
         .container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 40px;
+            gap: 30px;
             z-index: 1;
             padding: 20px;
+            max-width: 100%;
         }
 
         h1 {
@@ -65,6 +86,38 @@
             color: #f8e5d0;
             text-shadow: 0 0 20px rgba(255, 215, 150, 0.5);
             text-align: center;
+        }
+
+        /* Категории */
+        .categories {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 350px;
+        }
+
+        .category-btn {
+            padding: 8px 16px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 0.95rem;
+            color: rgba(248, 229, 208, 0.8);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(248, 229, 208, 0.3);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .category-btn:hover, .category-btn.active {
+            background: rgba(255, 215, 150, 0.2);
+            border-color: rgba(255, 215, 150, 0.6);
+            color: #f8e5d0;
+            transform: scale(1.05);
+        }
+
+        .category-btn.active {
+            box-shadow: 0 0 15px rgba(255, 215, 150, 0.3);
         }
 
         /* Контейнер карты */
@@ -100,7 +153,6 @@
             overflow: hidden;
         }
 
-        /* Рубашка карты */
         .card-back {
             background: linear-gradient(135deg, #e8c5e5 0%, #d4a5d9 50%, #c898c5 100%);
         }
@@ -111,7 +163,6 @@
             object-fit: cover;
         }
 
-        /* Лицевая сторона */
         .card-front {
             transform: rotateY(180deg);
             background: linear-gradient(145deg, #fef9f3 0%, #fdf0e0 50%, #fce8d5 100%);
@@ -135,9 +186,9 @@
             pointer-events: none;
         }
 
-        .sun-icon {
-            font-size: 60px;
-            margin-bottom: 20px;
+        .category-icon {
+            font-size: 50px;
+            margin-bottom: 15px;
             animation: glow 2s infinite;
         }
 
@@ -147,7 +198,7 @@
         }
 
         .wish-text {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             color: #5a4a3a;
             text-align: center;
             line-height: 1.6;
@@ -166,15 +217,22 @@
 
         .card-footer {
             font-family: 'Marck Script', cursive;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: #8a7a6a;
         }
 
-        /* Кнопка */
+        /* Кнопки */
+        .buttons-row {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
         .draw-btn {
-            padding: 18px 50px;
+            padding: 16px 40px;
             font-family: 'Cormorant Garamond', serif;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: 600;
             color: #5a4a3a;
             background: linear-gradient(145deg, #f8e5d0 0%, #e8c9a8 100%);
@@ -210,28 +268,131 @@
             box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
         }
 
-        .draw-btn:active {
-            transform: translateY(0);
+        .icon-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid rgba(248, 229, 208, 0.4);
+            background: rgba(255, 255, 255, 0.1);
+            color: #f8e5d0;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .draw-btn:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
+        .icon-btn:hover {
+            background: rgba(255, 215, 150, 0.2);
+            border-color: rgba(255, 215, 150, 0.6);
+            transform: scale(1.1);
         }
 
-        /* Инструкция */
         .instruction {
             color: rgba(248, 229, 208, 0.7);
-            font-size: 1rem;
+            font-size: 0.95rem;
             text-align: center;
             max-width: 300px;
         }
 
-        /* Эффект искр при перевороте */
-        .sparkle {
-            position: absolute;
+        /* История */
+        .history-panel {
+            position: fixed;
+            top: 0;
+            right: -350px;
+            width: 350px;
+            max-width: 90vw;
+            height: 100vh;
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+            border-left: 2px solid rgba(248, 229, 208, 0.2);
+            z-index: 100;
+            transition: right 0.3s ease;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .history-panel.open {
+            right: 0;
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(248, 229, 208, 0.2);
+        }
+
+        .history-header h2 {
+            font-family: 'Marck Script', cursive;
+            color: #f8e5d0;
+            font-size: 1.8rem;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: #f8e5d0;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .close-btn:hover {
+            opacity: 1;
+        }
+
+        .history-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            border: 1px solid rgba(248, 229, 208, 0.1);
+        }
+
+        .history-date {
+            font-size: 0.8rem;
+            color: rgba(248, 229, 208, 0.5);
+            margin-bottom: 5px;
+        }
+
+        .history-category {
+            font-size: 0.9rem;
+            color: rgba(255, 215, 150, 0.8);
+            margin-bottom: 8px;
+        }
+
+        .history-text {
+            color: rgba(248, 229, 208, 0.9);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .history-empty {
+            text-align: center;
+            color: rgba(248, 229, 208, 0.5);
+            padding: 40px 20px;
+        }
+
+        /* Эффекты */
+        .sparkle, .particle {
+            position: fixed;
             pointer-events: none;
+            z-index: 50;
+        }
+
+        .sparkle {
             animation: sparkle-fade 0.8s ease-out forwards;
+        }
+
+        .particle {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: particle-fly 1s ease-out forwards;
         }
 
         @keyframes sparkle-fade {
@@ -240,26 +401,88 @@
             100% { opacity: 0; transform: scale(0.5) rotate(360deg); }
         }
 
+        @keyframes particle-fly {
+            0% { opacity: 1; transform: scale(1) translate(0, 0); }
+            100% { opacity: 0; transform: scale(0) translate(var(--tx), var(--ty)); }
+        }
+
+        /* Overlay для панели */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 99;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
         /* Адаптивность */
         @media (max-width: 400px) {
             .card-container {
-                width: 260px;
-                height: 390px;
+                width: 280px;
+                height: 420px;
             }
-            h1 {
-                font-size: 2.2rem;
-            }
-            .wish-text {
-                font-size: 1.2rem;
-            }
+            h1 { font-size: 2.2rem; }
+            .wish-text { font-size: 1.15rem; }
+            .categories { gap: 8px; }
+            .category-btn { padding: 6px 12px; font-size: 0.85rem; }
+        }
+
+        /* PWA Install Banner */
+        .install-banner {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(145deg, #f8e5d0 0%, #e8c9a8 100%);
+            padding: 12px 25px;
+            border-radius: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            z-index: 200;
+            display: none;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .install-banner.show { display: flex; }
+
+        .install-banner span { color: #5a4a3a; font-weight: 600; }
+
+        .install-banner button {
+            padding: 8px 20px;
+            background: #5a4a3a;
+            color: #f8e5d0;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: inherit;
         }
     </style>
 </head>
 <body>
     <div class="stars" id="stars"></div>
+    <div class="overlay" id="overlay"></div>
 
     <div class="container">
         <h1>Карта Дня</h1>
+
+        <div class="categories" id="categories">
+            <button class="category-btn active" data-category="all">Все</button>
+            <button class="category-btn" data-category="general">Общие</button>
+            <button class="category-btn" data-category="love">Любовь</button>
+            <button class="category-btn" data-category="career">Карьера</button>
+            <button class="category-btn" data-category="health">Здоровье</button>
+            <button class="category-btn" data-category="money">Деньги</button>
+        </div>
 
         <div class="card-container" id="cardContainer">
             <div class="card" id="card">
@@ -267,67 +490,212 @@
                     <img src="imgs/card-back.png" alt="Рубашка карты">
                 </div>
                 <div class="card-face card-front">
-                    <span class="sun-icon">&#9728;</span>
+                    <span class="category-icon" id="categoryIcon">&#9728;</span>
                     <p class="wish-text" id="wishText">Твоё послание появится здесь...</p>
                     <div class="divider"></div>
-                    <span class="card-footer">Карта Дня</span>
+                    <span class="card-footer" id="cardFooter">Карта Дня</span>
                 </div>
             </div>
         </div>
 
-        <button class="draw-btn" id="drawBtn">Взять карту дня</button>
+        <div class="buttons-row">
+            <button class="icon-btn" id="historyBtn" title="История карт">&#128214;</button>
+            <button class="draw-btn" id="drawBtn">Взять карту дня</button>
+            <button class="icon-btn" id="shareBtn" title="Поделиться" style="display: none;">&#128257;</button>
+        </div>
 
-        <p class="instruction">Нажмите на карту или кнопку, чтобы получить своё послание на сегодня</p>
+        <p class="instruction">Выберите категорию и нажмите на карту</p>
+    </div>
+
+    <!-- История -->
+    <div class="history-panel" id="historyPanel">
+        <div class="history-header">
+            <h2>История карт</h2>
+            <button class="close-btn" id="closeHistory">&times;</button>
+        </div>
+        <div id="historyList"></div>
+    </div>
+
+    <!-- PWA Install -->
+    <div class="install-banner" id="installBanner">
+        <span>Установить приложение?</span>
+        <button id="installBtn">Установить</button>
     </div>
 
     <script>
-        // Мотивирующие пожелания
-        const wishes = [
-            "Сегодня — идеальный день, чтобы начать то, о чём ты давно мечтал. Вселенная на твоей стороне!",
-            "Ты сильнее, чем думаешь. Каждое препятствие — это ступенька к твоей мечте.",
-            "Доверься своей интуиции сегодня. Она знает путь, даже когда разум сомневается.",
-            "Маленькие шаги каждый день создают большие перемены. Продолжай идти!",
-            "Ты заслуживаешь всего самого лучшего. Позволь себе принять это.",
-            "Сегодня твоя энергия притягивает удачу. Будь открыт к новым возможностям!",
-            "Твоя уникальность — это твоя суперсила. Сияй своим светом!",
-            "Отпусти страхи — они не твои проводники. Доверься своему сердцу.",
-            "Чудеса случаются с теми, кто в них верит. Сегодня твой день чудес!",
-            "Каждый рассвет приносит новые возможности. Прими их с благодарностью.",
-            "Ты на правильном пути, даже если кажется иначе. Продолжай верить.",
-            "Твои мысли создают твою реальность. Выбирай светлые мысли!",
-            "Сегодня идеальный день для добрых дел. Они вернутся к тебе многократно.",
-            "Не бойся мечтать по-крупному — Вселенная любит смелые желания!",
-            "Твоя улыбка сегодня может изменить чей-то мир. Делись радостью!",
-            "Прошлое уже не имеет власти над тобой. Твоя сила — в настоящем моменте.",
-            "Ты — магнит для хороших событий. Позволь им войти в твою жизнь.",
-            "Благодарность открывает двери к изобилию. За что ты благодарен сегодня?",
-            "Верь в себя так, как веришь в восход солнца — безусловно и с радостью.",
-            "Сегодня ты получишь знак. Будь внимателен к подсказкам Вселенной.",
-            "Твоя внутренняя сила неисчерпаема. Черпай из неё уверенность!",
-            "Любовь — твой главный компас. Следуй за ней сегодня.",
-            "Ты — творец своей судьбы. Какой шедевр ты создашь сегодня?",
-            "Отдых — это не слабость, а мудрость. Позаботься о себе.",
-            "Твои мечты не случайны — они даны тебе, потому что ты способен их осуществить.",
-            "Сегодня откроется новая глава. Встречай её с открытым сердцем!",
-            "Ты окружён невидимой поддержкой. Ты никогда не одинок.",
-            "Каждый твой шаг имеет значение. Иди уверенно!",
-            "Сегодня день исцеления. Отпусти всё, что тебя тяготит.",
-            "Твоя аура сияет особенно ярко сегодня. Делись этим светом с миром!",
-            "Препятствия — это замаскированные уроки. Принимай их с благодарностью.",
-            "Ты достоин любви, успеха и счастья. Не соглашайся на меньшее!",
-            "Сегодня удачный день для важных разговоров. Говори от сердца.",
-            "Твоя интуиция — твой лучший советник. Прислушайся к ней.",
-            "Радость — твоё естественное состояние. Возвращайся к ней почаще.",
-            "Сегодня ты можешь всё, во что веришь. Верь в лучшее!"
-        ];
+        // === ПОЖЕЛАНИЯ ПО КАТЕГОРИЯМ ===
+        const wishesData = {
+            general: [
+                "Сегодня — идеальный день, чтобы начать то, о чём ты давно мечтал!",
+                "Ты сильнее, чем думаешь. Каждое препятствие — ступенька к мечте.",
+                "Доверься своей интуиции. Она знает путь.",
+                "Маленькие шаги каждый день создают большие перемены.",
+                "Ты заслуживаешь всего самого лучшего.",
+                "Твоя уникальность — твоя суперсила. Сияй!",
+                "Отпусти страхи — они не твои проводники.",
+                "Чудеса случаются с теми, кто в них верит!",
+                "Каждый рассвет приносит новые возможности.",
+                "Ты на правильном пути, даже если кажется иначе.",
+                "Твои мысли создают твою реальность.",
+                "Не бойся мечтать по-крупному!",
+                "Твоя улыбка сегодня может изменить чей-то мир.",
+                "Прошлое не имеет власти над тобой.",
+                "Ты — магнит для хороших событий.",
+                "Благодарность открывает двери к изобилию.",
+                "Верь в себя безусловно и с радостью.",
+                "Сегодня ты получишь важный знак.",
+                "Твоя внутренняя сила неисчерпаема.",
+                "Ты — творец своей судьбы."
+            ],
+            love: [
+                "Любовь уже рядом. Открой своё сердце!",
+                "Сегодня твоя энергия притягивает настоящие чувства.",
+                "Позволь себе быть любимым таким, какой ты есть.",
+                "Романтика витает в воздухе. Будь внимателен!",
+                "Твоё сердце готово к новым чувствам.",
+                "Любовь начинается с любви к себе.",
+                "Скоро произойдёт волшебная встреча.",
+                "Доверься чувствам — они не обманут.",
+                "Ты заслуживаешь большой и настоящей любви.",
+                "Сегодня хороший день для признаний.",
+                "Отношения расцветут новыми красками.",
+                "Любовь преображает — позволь ей войти.",
+                "Твоя вторая половинка думает о тебе.",
+                "Гармония в отношениях начинается с тебя.",
+                "Сегодня день примирения и понимания.",
+                "Романтическое приключение ждёт тебя!",
+                "Люби без страха, открыто и искренне.",
+                "Твоё сердце знает, кого оно выбрало.",
+                "Любовь — твой главный компас сегодня.",
+                "Отпусти прошлое — новая любовь близко."
+            ],
+            career: [
+                "Сегодня идеальный день для новых проектов!",
+                "Твои таланты заметят нужные люди.",
+                "Смелые идеи приведут к успеху.",
+                "Карьерный прорыв уже близко!",
+                "Твоя работа скоро принесёт отличные плоды.",
+                "Новые возможности уже стучатся в дверь.",
+                "Ты заслужил признание — оно придёт.",
+                "Сегодня хороший день для важных переговоров.",
+                "Твоя креативность — ключ к успеху.",
+                "Не бойся брать на себя больше ответственности.",
+                "Твои усилия не останутся незамеченными.",
+                "Профессиональный рост неизбежен.",
+                "Сегодня ты можешь изменить свою карьеру.",
+                "Доверяй своим профессиональным инстинктам.",
+                "Новые знакомства откроют новые двери.",
+                "Ты готов к следующему уровню!",
+                "Твоя экспертиза ценна — не недооценивай себя.",
+                "Сегодня удача на стороне смелых решений.",
+                "Лидерские качества проявятся в полную силу.",
+                "Время действовать — момент настал!"
+            ],
+            health: [
+                "Твоё тело мудрее, чем кажется. Слушай его.",
+                "Сегодня прекрасный день для заботы о себе.",
+                "Энергия наполняет каждую клетку твоего тела.",
+                "Здоровые привычки становятся второй натурой.",
+                "Отдых — это не слабость, а мудрость.",
+                "Твоё тело благодарно за каждую заботу.",
+                "Сегодня идеальный день для новых здоровых привычек.",
+                "Баланс в теле создаёт баланс в жизни.",
+                "Природа даёт тебе силы — будь на свежем воздухе.",
+                "Каждый глубокий вдох наполняет тебя жизнью.",
+                "Твоё здоровье улучшается день за днём.",
+                "Позитивные мысли исцеляют тело.",
+                "Сон — твой лучший доктор сегодня.",
+                "Движение — это жизнь. Не сиди на месте!",
+                "Твоё тело способно на большее, чем ты думаешь.",
+                "Внутренняя гармония отражается на здоровье.",
+                "Сегодня хороший день начать что-то новое для себя.",
+                "Вода — источник твоей энергии.",
+                "Отпусти стресс — твоё тело скажет спасибо.",
+                "Здоровье — это выбор. Сделай правильный выбор сегодня."
+            ],
+            money: [
+                "Финансовое изобилие уже на пути к тебе!",
+                "Сегодня благоприятный день для денежных дел.",
+                "Новые источники дохода скоро откроются.",
+                "Твои инвестиции принесут хорошие плоды.",
+                "Деньги любят тех, кто их уважает.",
+                "Неожиданная финансовая удача близко!",
+                "Твоё финансовое мышление меняется к лучшему.",
+                "Пора просить повышения — звёзды на твоей стороне!",
+                "Экономия сегодня — богатство завтра.",
+                "Денежный поток усиливается.",
+                "Новая идея может принести прибыль.",
+                "Сегодня хороший день для финансовых решений.",
+                "Изобилие — твоё естественное состояние.",
+                "Деньги приходят к тебе легко и радостно.",
+                "Твои финансовые цели достижимы.",
+                "Пассивный доход станет реальностью.",
+                "Будь открыт к неожиданным возможностям заработка.",
+                "Финансовая стабильность укрепляется.",
+                "Ты заслуживаешь финансовой свободы.",
+                "Щедрость возвращается к тебе многократно."
+            ]
+        };
 
+        const categoryIcons = {
+            general: '&#9728;',
+            love: '&#10084;',
+            career: '&#128640;',
+            health: '&#127807;',
+            money: '&#128176;'
+        };
+
+        const categoryNames = {
+            all: 'Карта Дня',
+            general: 'Общее послание',
+            love: 'Любовь',
+            career: 'Карьера',
+            health: 'Здоровье',
+            money: 'Деньги'
+        };
+
+        // === ЭЛЕМЕНТЫ ===
         const card = document.getElementById('card');
         const cardContainer = document.getElementById('cardContainer');
         const drawBtn = document.getElementById('drawBtn');
         const wishText = document.getElementById('wishText');
-        let isFlipped = false;
+        const categoryIcon = document.getElementById('categoryIcon');
+        const cardFooter = document.getElementById('cardFooter');
+        const historyBtn = document.getElementById('historyBtn');
+        const historyPanel = document.getElementById('historyPanel');
+        const historyList = document.getElementById('historyList');
+        const closeHistory = document.getElementById('closeHistory');
+        const shareBtn = document.getElementById('shareBtn');
+        const overlay = document.getElementById('overlay');
+        const categoryBtns = document.querySelectorAll('.category-btn');
 
-        // Создание звёзд
+        let isFlipped = false;
+        let currentCategory = 'all';
+        let currentWish = '';
+        let flipSound;
+
+        // === ЗВУК ===
+        function initSound() {
+            // Создаём звук с помощью Web Audio API
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            if (AudioContext) {
+                const audioCtx = new AudioContext();
+                flipSound = () => {
+                    const oscillator = audioCtx.createOscillator();
+                    const gainNode = audioCtx.createGain();
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioCtx.destination);
+                    oscillator.frequency.setValueAtTime(800, audioCtx.currentTime);
+                    oscillator.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 0.1);
+                    gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+                    oscillator.start(audioCtx.currentTime);
+                    oscillator.stop(audioCtx.currentTime + 0.2);
+                };
+            }
+        }
+
+        // === ЗВЁЗДЫ И ПАДАЮЩИЕ ЗВЁЗДЫ ===
         function createStars() {
             const starsContainer = document.getElementById('stars');
             for (let i = 0; i < 100; i++) {
@@ -339,50 +707,197 @@
                 star.style.animationDuration = (1.5 + Math.random()) + 's';
                 starsContainer.appendChild(star);
             }
+
+            // Падающие звёзды
+            for (let i = 0; i < 3; i++) {
+                const shootingStar = document.createElement('div');
+                shootingStar.className = 'shooting-star';
+                shootingStar.style.top = Math.random() * 50 + '%';
+                shootingStar.style.animationDelay = (i * 5 + Math.random() * 5) + 's';
+                starsContainer.appendChild(shootingStar);
+            }
         }
 
-        // Создание искр
+        // === ЭФФЕКТЫ ===
         function createSparkles() {
-            const colors = ['#FFD700', '#FFA500', '#FF69B4', '#87CEEB', '#98FB98'];
-            for (let i = 0; i < 20; i++) {
+            const colors = ['#FFD700', '#FFA500', '#FF69B4', '#87CEEB', '#98FB98', '#DDA0DD'];
+            const rect = cardContainer.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+
+            for (let i = 0; i < 25; i++) {
                 const sparkle = document.createElement('div');
                 sparkle.className = 'sparkle';
                 sparkle.innerHTML = '&#10022;';
-                sparkle.style.left = (Math.random() * 300 + 50) + 'px';
-                sparkle.style.top = (Math.random() * 450 + 100) + 'px';
+                sparkle.style.left = (centerX + (Math.random() - 0.5) * 300) + 'px';
+                sparkle.style.top = (centerY + (Math.random() - 0.5) * 400) + 'px';
                 sparkle.style.color = colors[Math.floor(Math.random() * colors.length)];
-                sparkle.style.fontSize = (15 + Math.random() * 20) + 'px';
+                sparkle.style.fontSize = (15 + Math.random() * 25) + 'px';
                 document.body.appendChild(sparkle);
                 setTimeout(() => sparkle.remove(), 800);
             }
-        }
 
-        // Переворот карты
-        function flipCard() {
-            if (isFlipped) {
-                // Сброс карты
-                card.classList.remove('flipped');
-                isFlipped = false;
-                drawBtn.textContent = 'Взять карту дня';
-            } else {
-                // Выбор случайного пожелания
-                const randomWish = wishes[Math.floor(Math.random() * wishes.length)];
-                wishText.textContent = randomWish;
-
-                // Переворот
-                card.classList.add('flipped');
-                createSparkles();
-                isFlipped = true;
-                drawBtn.textContent = 'Взять другую карту';
+            // Частицы
+            for (let i = 0; i < 15; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = centerX + 'px';
+                particle.style.top = centerY + 'px';
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.setProperty('--tx', (Math.random() - 0.5) * 200 + 'px');
+                particle.style.setProperty('--ty', (Math.random() - 0.5) * 200 + 'px');
+                document.body.appendChild(particle);
+                setTimeout(() => particle.remove(), 1000);
             }
         }
 
-        // События
+        // === ИСТОРИЯ ===
+        function getHistory() {
+            return JSON.parse(localStorage.getItem('cardHistory') || '[]');
+        }
+
+        function saveToHistory(category, wish) {
+            const history = getHistory();
+            history.unshift({
+                date: new Date().toLocaleString('ru-RU'),
+                category: categoryNames[category] || categoryNames.general,
+                wish: wish
+            });
+            // Храним последние 50 карт
+            localStorage.setItem('cardHistory', JSON.stringify(history.slice(0, 50)));
+        }
+
+        function renderHistory() {
+            const history = getHistory();
+            if (history.length === 0) {
+                historyList.innerHTML = '<div class="history-empty">История пуста.<br>Возьмите свою первую карту!</div>';
+                return;
+            }
+            historyList.innerHTML = history.map(item => `
+                <div class="history-item">
+                    <div class="history-date">${item.date}</div>
+                    <div class="history-category">${item.category}</div>
+                    <div class="history-text">${item.wish}</div>
+                </div>
+            `).join('');
+        }
+
+        // === ПЕРЕВОРОТ КАРТЫ ===
+        function flipCard() {
+            if (isFlipped) {
+                card.classList.remove('flipped');
+                isFlipped = false;
+                drawBtn.textContent = 'Взять карту дня';
+                shareBtn.style.display = 'none';
+            } else {
+                // Выбираем категорию
+                let category = currentCategory;
+                if (category === 'all') {
+                    const categories = Object.keys(wishesData);
+                    category = categories[Math.floor(Math.random() * categories.length)];
+                }
+
+                // Выбираем пожелание
+                const wishes = wishesData[category];
+                currentWish = wishes[Math.floor(Math.random() * wishes.length)];
+
+                // Обновляем карту
+                wishText.textContent = currentWish;
+                categoryIcon.innerHTML = categoryIcons[category];
+                cardFooter.textContent = categoryNames[category];
+
+                // Переворот
+                card.classList.add('flipped');
+                if (flipSound) flipSound();
+                createSparkles();
+                isFlipped = true;
+                drawBtn.textContent = 'Взять другую карту';
+                shareBtn.style.display = 'flex';
+
+                // Сохраняем в историю
+                saveToHistory(category, currentWish);
+            }
+        }
+
+        // === ПОДЕЛИТЬСЯ ===
+        async function shareCard() {
+            const shareData = {
+                title: 'Карта Дня',
+                text: `${categoryNames[currentCategory]}: ${currentWish}`,
+                url: window.location.href
+            };
+
+            if (navigator.share) {
+                try {
+                    await navigator.share(shareData);
+                } catch (err) {
+                    copyToClipboard(shareData.text);
+                }
+            } else {
+                copyToClipboard(shareData.text);
+            }
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Послание скопировано!');
+            });
+        }
+
+        // === ПАНЕЛЬ ИСТОРИИ ===
+        function openHistory() {
+            renderHistory();
+            historyPanel.classList.add('open');
+            overlay.classList.add('active');
+        }
+
+        function closeHistoryPanel() {
+            historyPanel.classList.remove('open');
+            overlay.classList.remove('active');
+        }
+
+        // === КАТЕГОРИИ ===
+        categoryBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                categoryBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentCategory = btn.dataset.category;
+            });
+        });
+
+        // === PWA ===
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('installBanner').classList.add('show');
+        });
+
+        document.getElementById('installBtn')?.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                await deferredPrompt.userChoice;
+                deferredPrompt = null;
+                document.getElementById('installBanner').classList.remove('show');
+            }
+        });
+
+        // === СОБЫТИЯ ===
         cardContainer.addEventListener('click', flipCard);
         drawBtn.addEventListener('click', flipCard);
+        historyBtn.addEventListener('click', openHistory);
+        closeHistory.addEventListener('click', closeHistoryPanel);
+        overlay.addEventListener('click', closeHistoryPanel);
+        shareBtn.addEventListener('click', shareCard);
 
-        // Инициализация
+        // === ИНИЦИАЛИЗАЦИЯ ===
         createStars();
+        initSound();
+
+        // Регистрация Service Worker для PWA
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js').catch(() => {});
+        }
     </script>
 
 <script>
