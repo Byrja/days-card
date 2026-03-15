@@ -1,8 +1,10 @@
-const CACHE_NAME = 'card-of-day-v2';
+const CACHE_NAME = 'card-of-day-v3';
 const urlsToCache = [
   '/',
   '/index.html',
   '/imgs/card-back.png',
+  '/imgs/card-back-love.jpg',
+  '/imgs/card-back-money.jpg',
   '/imgs/card-back-sarcastic.jpg',
   '/imgs/card-back-dark.jpg',
   'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Marck+Script&display=swap'
