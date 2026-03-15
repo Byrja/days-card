@@ -479,7 +479,6 @@
             <button class="category-btn active" data-category="all">Все</button>
             <button class="category-btn" data-category="general">Общие</button>
             <button class="category-btn" data-category="love">Любовь</button>
-            <button class="category-btn" data-category="career">Карьера</button>
             <button class="category-btn" data-category="health">Здоровье</button>
             <button class="category-btn" data-category="money">Деньги</button>
             <button class="category-btn" data-category="sarcastic">Сарказм</button>
@@ -696,6 +695,7 @@
         const categoryBacks = {
             default: 'imgs/card-back.png',
             love: 'imgs/card-back-love.jpg',
+            health: 'imgs/card-back-health.jpg',
             money: 'imgs/card-back-money.jpg',
             sarcastic: 'imgs/card-back-sarcastic.jpg',
             dark: 'imgs/card-back-dark.jpg'
@@ -852,7 +852,7 @@
                 // Выбираем категорию
                 let category = currentCategory;
                 if (category === 'all') {
-                    const categories = Object.keys(wishesData);
+                    const categories = Object.keys(wishesData).filter(c => c !== 'career');
                     category = categories[Math.floor(Math.random() * categories.length)];
                 }
 
@@ -924,6 +924,9 @@
                 categoryBtns.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 currentCategory = btn.dataset.category;
+                if (cardBackImage) {
+                    cardBackImage.src = categoryBacks[currentCategory] || categoryBacks.default;
+                }
             });
         });
 
